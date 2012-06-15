@@ -205,6 +205,7 @@ var sharedErrorLoggerInstance = nil;
     id                      stackTrace;
     LPMultiLineTextField    descriptionTextField;
     LPMultiLineTextField    informationTextField;
+    CPString                publishedReportURL;
 }
 
 - (void)initWithContentRect:(CGRect)aContentRect styleMask:(id)aStyleMask stackTrace:(id)aStackTrace
@@ -339,20 +340,21 @@ var sharedErrorLoggerInstance = nil;
     [CPApp stopModal];
     [self orderOut:nil];
 
-    serverReply = aData;
+    publishedReportURL = aData;
 
     var alert = [[CPAlert alloc] init];
 
     [alert setAlertStyle:CPInformationalAlertStyle];
+    [alert setDelegate:self];
     [alert addButtonWithTitle:@"Thanks!"];
-    [alert addButtonWithTitle:@"Open Issue"];
-    [alert._informativeLabel setSelectable:YES];
 
-
-    if (serverReply)
+    if (publishedReportURL)
     {
+        [alert addButtonWithTitle:@"Open Issue"];
+        [alert._informativeLabel setSelectable:YES];
+
         [alert setMessageText:@"Thank you! Your report has been sent"];
-        [alert setInformativeText:serverReply];
+        [alert setInformativeText:@"You can find your report at the following URL: " + publishedReportURL];
     }
     else
     {
@@ -371,8 +373,8 @@ var sharedErrorLoggerInstance = nil;
                 location.reload();
                 break;
 
-        case 1: // Send report
-                window.open(reportURL);
+        case 1: // Open report
+                window.open(publishedReportURL);
                 location.reload();
                 break;
     }
