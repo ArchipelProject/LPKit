@@ -60,7 +60,17 @@ var CPTextFieldInputOwner = nil,
         {
             if (!CPTextFieldInputResigning)
             {
-                [[CPTextFieldInputOwner window] makeFirstResponder:nil];
+                // The input element can easily lose focus while we still want it to be focused for various browser reasons.
+                // As long as we're first responder in the key window, the input element should be focused.
+                window.setTimeout(function()
+                    {
+                        if (!CPTextFieldInputOwner || CPTextFieldInputOwner !== self)
+                            return;
+                        var theWindow = [CPTextFieldInputOwner window];
+                        if ([CPApp keyWindow] === theWindow && [theWindow firstResponder] === CPTextFieldInputOwner)
+                            _DOMTextareaElement.focus();
+                    }, 0.0);
+
                 return;
             }
 
@@ -71,7 +81,14 @@ var CPTextFieldInputOwner = nil,
             CPTextFieldInputDidBlur = YES;
         };
 
+        CPTextFieldInputFunction = function()
+        {
+            [CPTextFieldInputOwner _setValueFromElement];
+        };
+
         _DOMTextareaElement.onblur = CPTextFieldBlurFunction;
+
+        _DOMTextareaElement.oninput = CPTextFieldInputFunction;
 
         self._DOMElement.appendChild(_DOMTextareaElement);
     }
@@ -122,8 +139,8 @@ var CPTextFieldInputOwner = nil,
     DOMElement.style.left = contentInset.left + @"px";
     DOMElement.style.right = contentInset.right + @"px";
 
-    DOMElement.style.width = (CGRectGetWidth(bounds) - contentInset.left - contentInset.right) + @"px";
-    DOMElement.style.height = (CGRectGetHeight(bounds) - contentInset.top - contentInset.bottom) + @"px";
+    DOMElement.style.width = MAX(0.0, (CGRectGetWidth(bounds) - contentInset.left - contentInset.right)) + @"px";
+    DOMElement.style.height = MAX(0.0, (CGRectGetHeight(bounds) - contentInset.top - contentInset.bottom)) + @"px";
 
     DOMElement.style.color = [[self currentValueForThemeAttribute:@"text-color"] cssString];
     DOMElement.style.font = [[self currentValueForThemeAttribute:@"font"] cssString];
@@ -150,8 +167,15 @@ var CPTextFieldInputOwner = nil,
     if ([self hasThemeState:CPTextFieldStatePlaceholder])
     {
         DOMElement.value = [self placeholderString];
-    } else {
+    }
+    else if (DOMElement.value != [self stringValue])
+    {
+        // Due to a bug in WebKit we can't change the text area value when the field is focused and
+        // the cursor is placed within the current value. If we do, the text area stops showing its
+        // cursor and stops accepting text (although it still thinks it's focused).
+        DOMElement.blur();
         DOMElement.value = [self stringValue];
+        DOMElement.focus();
     }
 
     if (_hideOverflow)
@@ -200,6 +224,13 @@ var CPTextFieldInputOwner = nil,
 
 - (void)keyUp:(CPEvent)anEvent
 {
+    [self _setValueFromElement];
+
+    [[[self window] platformWindow] _propagateCurrentDOMEvent:YES];
+}
+
+- (void)_setValueFromElement
+{
     var oldStringValue = [self stringValue];
     [self _setStringValue:[self _DOMTextareaElement].value];
 
@@ -213,8 +244,6 @@ var CPTextFieldInputOwner = nil,
 
         [self textDidChange:[CPNotification notificationWithName:CPControlTextDidChangeNotification object:self userInfo:nil]];
     }
-
-    [[[self window] platformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 - (BOOL)becomeFirstResponder
@@ -222,7 +251,7 @@ var CPTextFieldInputOwner = nil,
     [self setThemeState:CPThemeStateEditing];
     [self _updatePlaceholderState];
 
-    setTimeout(function(){
+    setTimeout(function() {
         [self _DOMTextareaElement].focus();
         CPTextFieldInputOwner = self;
     }, 0.0);
