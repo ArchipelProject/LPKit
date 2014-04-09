@@ -108,11 +108,6 @@ var CPTextFieldInputOwner = nil,
 {
     [super layoutSubviews];
 
-    var contentView = [self layoutEphemeralSubviewNamed:@"content-view"
-                                             positioned:CPWindowAbove
-                        relativeToEphemeralSubviewNamed:@"bezel-view"];
-    [contentView setHidden:YES];
-
     var DOMElement = [self _DOMTextareaElement],
         contentInset = [self currentValueForThemeAttribute:@"content-inset"],
         bounds = [self bounds];
@@ -125,7 +120,7 @@ var CPTextFieldInputOwner = nil,
     DOMElement.style.width = (CGRectGetWidth(bounds) - contentInset.left - contentInset.right) + @"px";
     DOMElement.style.height = (CGRectGetHeight(bounds) - contentInset.top - contentInset.bottom) + @"px";
 
-    DOMElement.style.color = [[self currentValueForThemeAttribute:@"text-color"] cssString];
+    DOMElement.style.color = [[self valueForThemeAttribute:@"text-color" inState:CPThemeStateEditing] cssString];
     DOMElement.style.font = [[self currentValueForThemeAttribute:@"font"] cssString];
 
     switch ([self currentValueForThemeAttribute:@"alignment"])
@@ -145,17 +140,6 @@ var CPTextFieldInputOwner = nil,
         default:
             DOMElement.style.textAlign = "left";
     }
-
-    //  We explicitly want a placeholder when the value is an empty string.
-    if ([self hasThemeState:CPTextFieldStatePlaceholder])
-    {
-        DOMElement.value = [self placeholderString];
-    } else {
-        DOMElement.value = [self stringValue];
-    }
-
-    if (_hideOverflow)
-        DOMElement.style.overflow = @"hidden";
 }
 
 - (void)scrollWheel:(CPEvent)anEvent
