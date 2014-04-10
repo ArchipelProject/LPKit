@@ -30,7 +30,6 @@
 
 @import <AppKit/CPControl.j>
 @import <AppKit/CPView.j>
-
 @import "LPViewAnimation.j"
 
 
@@ -62,7 +61,7 @@
     return @"lp-switch";
 }
 
-+ (id)themeAttributes
++ (CPDictionary)themeAttributes
 {
     return [CPDictionary dictionaryWithObjects:[[CPNull null], [CPNull null], [CPNull null], CGSizeMake(30.0, 24.0), [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null]]
                                        forKeys:[@"off-background-color", @"on-background-color", @"knob-background-color", @"knob-size", @"label-offset",
@@ -282,7 +281,7 @@
     [super setEnabled:isEnabled];
 }
 
-- (void)setState:(int)aState
+- (void)setState:(CPInteger)aState
 {
     if (aState == CPOnState)
         [self setOn:YES animated:YES sendAction:NO];
@@ -314,8 +313,6 @@
 
 - (void)setHighlighted:(BOOL)shouldBeHighlighted
 {
-    isHighlighted = shouldBeHighlighted;
-
     if (shouldBeHighlighted)
         [self setThemeState:CPThemeStateHighlighted];
     else

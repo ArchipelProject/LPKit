@@ -31,6 +31,7 @@
 @import <AppKit/CPView.j>
 @import <Foundation/CPDate.j>
 
+@global CPApp
 
 var immutableDistantFuture = [CPDate distantFuture];
 
@@ -93,7 +94,7 @@ var _startAndEndOfWeekCache = {};
     return @"lp-calendar-month-view";
 }
 
-+ (id)themeAttributes
++ (CPDictionary)themeAttributes
 {
     return [CPDictionary dictionaryWithObjects:[nil]
                                        forKeys:[@"grid-color"]];
@@ -139,11 +140,11 @@ var _startAndEndOfWeekCache = {};
         date = [CPDate dateAtMidnight:date];
 
         // There must be a better way to do this.
-        _firstDay = [date copy];
-        _firstDay.setDate(1);
+        var firstDay = [date copy];
+        firstDay.setDate(1);
 
-        previousMonth = new Date(_firstDay.getTime() - 86400000);
-        nextMonth = new Date(_firstDay.getTime() + (([date daysInMonth] + 1) * 86400000));
+        previousMonth = new Date(firstDay.getTime() - 86400000);
+        nextMonth = new Date(firstDay.getTime() + (([date daysInMonth] + 1) * 86400000));
     }
 
     [self reloadData];
@@ -189,10 +190,10 @@ var _startAndEndOfWeekCache = {};
 
 - (CPArray)startAndEndOfWeekForDate:(CPDate)aDate
 {
-    _cached = _startAndEndOfWeekCache[aDate.toString()];
+    var cached = _startAndEndOfWeekCache[aDate.toString()];
 
-    if (_cached)
-        return _cached;
+    if (cached)
+        return cached;
 
     var startOfWeek = new Date(aDate.getTime() - ([self startOfWeekForDate:aDate] * 86400000)),
         endOfWeek = new Date(startOfWeek.getTime() + (6 * 86400000));
@@ -357,7 +358,7 @@ var _startAndEndOfWeekCache = {};
     [self makeSelectionWithIndex:startSelectionIndex end:nil];
 }
 
-- (void)mouseDragged:(CPevent)anEvent
+- (void)mouseDragged:(CPEvent)anEvent
 {
     var locationInView = [self locationInViewForEvent:anEvent],
         tileIndex = [self indexOfTileAtPoint:locationInView];
@@ -378,22 +379,22 @@ var _startAndEndOfWeekCache = {};
     // Clicked a date
     if (!currentSelectionIndex || startSelectionIndex == currentSelectionIndex)
     {
-        var calendarView = [[self superview] superview],
+        var currentCalendarView = [[self superview] superview],
             tile = [[self subviews] objectAtIndex:startSelectionIndex],
             tileDate = [tile date],
             tileMonth = tileDate.getMonth();
 
         // Double clicked a date in the current month.
-        if (tileMonth == date.getMonth() && [[CPApp currentEvent] clickCount] === 2 && [calendarView doubleAction])
-            [CPApp sendAction:[calendarView doubleAction] to:[calendarView target] from:calendarView];
+        if (tileMonth == date.getMonth() && [[CPApp currentEvent] clickCount] === 2 && [currentCalendarView doubleAction])
+            [CPApp sendAction:[currentCalendarView doubleAction] to:[currentCalendarView target] from:currentCalendarView];
 
         // Clicked the Previous month
         if (tileMonth == previousMonth.getMonth())
-            [calendarView changeToMonth:previousMonth];
+            [currentCalendarView changeToMonth:previousMonth];
 
         // Clicked the Next month
         if (tileMonth == nextMonth.getMonth())
-            [calendarView changeToMonth:nextMonth];
+            [currentCalendarView changeToMonth:nextMonth];
 
     }
     // Made a selection
@@ -521,7 +522,7 @@ var _startAndEndOfWeekCache = {};
     return @"lp-calendar-day-view";
 }
 
-+ (id)themeAttributes
++ (CPDictionary)themeAttributes
 {
     return [CPDictionary dictionaryWithObjects:[nil, nil]
                                        forKeys:[@"background-color", @"bezel-color"]];

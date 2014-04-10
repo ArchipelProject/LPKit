@@ -63,7 +63,7 @@
     return self;
 }
 
-- (void)drawRect:(CPRect)aRect
+- (void)drawRect:(CGRect)aRect
 {
     var context = [[CPGraphicsContext currentContext] graphicsPort],
         bounds = [self bounds],

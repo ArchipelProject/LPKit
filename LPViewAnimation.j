@@ -100,7 +100,7 @@ var appendCSSValueToKey = function(/*DOMElement*/ anElement, /*CPString*/aValue,
     return self;
 }
 
-- (void)setAnimationCurve:(id)anAnimationCurve
+- (void)setAnimationCurve:(CPAnimationCurve)anAnimationCurve
 {
     [super setAnimationCurve:anAnimationCurve];
 

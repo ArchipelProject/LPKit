@@ -27,6 +27,8 @@
  * THE SOFTWARE.
  *
  */
+
+@import <Foundation/Foundation.j>
 @import <AppKit/CPButton.j>
 @import <AppKit/CPControl.j>
 @import <AppKit/CPTextField.j>
@@ -148,7 +150,7 @@ var LPMonthNames = [@"January", @"February", @"March", @"April", @"May", @"June"
 {
 }
 
-+ labelWithTitle:(CPString)aTitle
++ (CPTextField)labelWithTitle:(CPString)aTitle
 {
     var label = [[LPCalendarLabel alloc] initWithFrame:CGRectMakeZero()];
     [label setTitle:aTitle];

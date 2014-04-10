@@ -50,7 +50,7 @@ LPSlideViewNegativeDirection   = 4;
     id _delegate @accessors(property=delegate);
 }
 
-- (id)initWithFrame:(CPRect)aFrame
+- (id)initWithFrame:(CGRect)aFrame
 {
     if (self = [super initWithFrame:aFrame])
     {
@@ -62,7 +62,7 @@ LPSlideViewNegativeDirection   = 4;
     return self;
 }
 
-- (void)addSubview:(id)aView
+- (void)addSubview:(CPView)aView
 {
     if (!currentView)
         currentView = aView;

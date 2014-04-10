@@ -71,6 +71,11 @@ var CPTextFieldInputOwner = nil,
             CPTextFieldInputDidBlur = YES;
         };
 
+        var CPTextFieldInputFunction = function()
+        {
+            [CPTextFieldInputOwner _setValueFromElement];
+        };
+
         _DOMTextareaElement.onblur = CPTextFieldBlurFunction;
 
         self._DOMElement.appendChild(_DOMTextareaElement);
@@ -251,7 +256,7 @@ var CPTextFieldInputOwner = nil,
     return YES;
 }
 
-- (void)_setStringValue:(id)aValue
+- (BOOL)_setStringValue:(CPString)aValue
 {
     [self willChangeValueForKey:@"objectValue"];
     [super setObjectValue:String(aValue)];
@@ -267,15 +272,6 @@ var CPTextFieldInputOwner = nil,
         [self _DOMTextareaElement].value = aValue;
 
     [self _updatePlaceholderState];
-}
-
-- (void)_setCurrentValueIsPlaceholder:(BOOL)isPlaceholder
-{
-    //  Under certain circumstances, _originalPlaceholderString is empty.
-    if (!_originalPlaceholderString)
-        _originalPlaceholderString = [self placeholderString];
-
-    [super _setCurrentValueIsPlaceholder:isPlaceholder];
 }
 
 @end

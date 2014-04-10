@@ -31,6 +31,8 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/CPControl.j>
 
+@class _CPImageAndTextView
+
 LPAnchorButtonNoUnderline     = 0;
 LPAnchorButtonNormalUnderline = 1;
 LPAnchorButtonHoverUnderline  = 2;
