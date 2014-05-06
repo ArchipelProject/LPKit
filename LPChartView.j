@@ -28,6 +28,7 @@
  *
  */
 @import <AppKit/CPView.j>
+@import <AppKit/CPTextField.j>
 
 // TODO: These should be ivars, or more likely, theme settings.
 
