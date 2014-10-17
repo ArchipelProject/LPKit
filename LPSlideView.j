@@ -91,7 +91,7 @@ LPSlideViewNegativeDirection   = 4;
 
     isSliding = YES;
 
-    if(_delegate && [_delegate respondsToSelector:@selector(slideView:willMoveToView:)])
+    if (_delegate && [_delegate respondsToSelector:@selector(slideView:willMoveToView:)])
         [_delegate slideView:self willMoveToView:aView];
 
     var viewIndex = [[self subviews] indexOfObject:aView],
@@ -184,7 +184,7 @@ LPSlideViewNegativeDirection   = 4;
 
 - (void)animationDidEnd
 {
-    if(_delegate && [_delegate respondsToSelector:@selector(slideView:didMoveToView:)])
+    if (_delegate && [_delegate respondsToSelector:@selector(slideView:didMoveToView:)])
         [_delegate slideView:self didMoveToView:currentView];
 
     [previousView setHidden:YES];

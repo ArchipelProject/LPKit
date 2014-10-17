@@ -58,12 +58,12 @@ var LPMonthNames = [@"January", @"February", @"March", @"April", @"May", @"June"
 
 - (id)initWithFrame:(CGRect)aFrame
 {
-    if(self = [super initWithFrame:aFrame])
+    if (self = [super initWithFrame:aFrame])
     {
         monthLabel = [[CPTextField alloc] initWithFrame:CGRectMake(0, 8, aFrame.size.width, aFrame.size.height)];
         [monthLabel setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
         [monthLabel setValue:CPCenterTextAlignment forThemeAttribute:@"alignment"];
-	[monthLabel setHitTests:NO];
+        [monthLabel setHitTests:NO];
         [self addSubview:monthLabel];
 
         prevButton = [[LPCalendarHeaderArrowButton alloc] initWithFrame:CGRectMake(6, 9, 0, 0)];
@@ -215,12 +215,12 @@ LPCalendarFastForwardDelay = 0.1;
      TODO: move this into theming some how.
  */
 
- - (void)incrementOriginBy:(int)anInt
- {
-     var currentOrigin = [self frame].origin;
-     currentOrigin.y += anInt;
-     [self setFrameOrigin:currentOrigin];
- }
+- (void)incrementOriginBy:(int)anInt
+{
+    var currentOrigin = [self frame].origin;
+    currentOrigin.y += anInt;
+    [self setFrameOrigin:currentOrigin];
+}
 
 - (BOOL)startTrackingAt:(CGPoint)aPoint
 {
