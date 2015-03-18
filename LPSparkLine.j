@@ -63,13 +63,30 @@
     return self;
 }
 
-- (void)drawRect:(CPRect)aRect
+- (void)drawRect:(CGRect)aRect
 {
     var context = [[CPGraphicsContext currentContext] graphicsPort],
         bounds = [self bounds],
         height = CGRectGetHeight(bounds) - (2 * lineWeight),
         tickWidth = CGRectGetWidth(bounds) / ([data count] - 1),
-        maxValue = Math.max.apply(Math, data);
+        maxValue = Math.max.apply(Math, data),
+        devicePixelRatio = window.devicePixelRatio || 1,
+        backingStoreRatio = context.webkitBackingStorePixelRatio ||
+                            context.mozBackingStorePixelRatio ||
+                            context.msBackingStorePixelRatio ||
+                            context.oBackingStorePixelRatio ||
+                            context.backingStorePixelRatio || 1,
+        ratio = devicePixelRatio / backingStoreRatio,
+        canvas = self._DOMElement.getElementsByTagName("canvas")[0],
+        oldWidth = aRect.size.width,
+        oldHeight = aRect.size.height;
+
+    canvas.width = oldWidth * ratio;
+    canvas.height = oldHeight * ratio;
+    canvas.style.width = oldWidth + 'px';
+    canvas.style.height = oldHeight + 'px';
+
+    context.scale(ratio, ratio);
 
     CGContextBeginPath(context);
 

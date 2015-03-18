@@ -30,7 +30,6 @@
 
 @import <AppKit/CPControl.j>
 @import <AppKit/CPView.j>
-
 @import "LPViewAnimation.j"
 
 
@@ -54,7 +53,7 @@
     CPTextField offLabel;
     CPTextField onLabel;
 
-	LPViewAnimation animation;
+    LPViewAnimation animation;
 }
 
 + (CPString)themeClass
@@ -62,7 +61,7 @@
     return @"lp-switch";
 }
 
-+ (id)themeAttributes
++ (CPDictionary)themeAttributes
 {
     return [CPDictionary dictionaryWithObjects:[[CPNull null], [CPNull null], [CPNull null], CGSizeMake(30.0, 24.0), [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null]]
                                        forKeys:[@"off-background-color", @"on-background-color", @"knob-background-color", @"knob-size", @"label-offset",
@@ -114,11 +113,11 @@
     // changed to stop the action firing if the user moved the switch to the inverse state, but then back to original state before releasing the mouse button
     if (shouldSendAction && on !== shouldSetOn)
     {
-		on = shouldSetOn;
+        on = shouldSetOn;
         [self sendAction:_action to:_target];
-	}
-	else
-		on = shouldSetOn;
+    }
+    else
+        on = shouldSetOn;
 
     var knobMinY = CGRectGetMinY([knob frame]),
         knobEndFrame = CGRectMake((on) ? [knob maxX] : [knob minX], knobMinY, CGRectGetWidth([knob frame]), CGRectGetHeight([knob frame])),
@@ -129,10 +128,10 @@
         onLabelEndFrame = CGRectMake(CGRectGetMinX(knobEndFrame) - labelOffset.width - CGRectGetWidth([onLabel bounds]), labelOffset.height,
                                      CGRectGetWidth([onLabel bounds]), CGRectGetHeight([onLabel bounds]));
 
-	// added to counter a problem whereby changing the state more than once (i.e., ON -> OFF -> ON) before giving control to the run loop,
-	// caused the control to not update properly
-	if([animation isAnimating])
-		[animation stopAnimation];
+    // added to counter a problem whereby changing the state more than once (i.e., ON -> OFF -> ON) before giving control to the run loop,
+    // caused the control to not update properly
+    if ([animation isAnimating])
+        [animation stopAnimation];
 
     if (shouldAnimate)
     {
@@ -211,7 +210,7 @@
     // Limit X
     if (knobX < knobMinX)
         knobX = knobMinX;
-    else if(knobX > knobMaxX)
+    else if (knobX > knobMaxX)
         knobX = knobMaxX;
 
     // Resize background views
@@ -282,7 +281,7 @@
     [super setEnabled:isEnabled];
 }
 
-- (void)setState:(int)aState
+- (void)setState:(CPInteger)aState
 {
     if (aState == CPOnState)
         [self setOn:YES animated:YES sendAction:NO];
@@ -314,8 +313,6 @@
 
 - (void)setHighlighted:(BOOL)shouldBeHighlighted
 {
-    isHighlighted = shouldBeHighlighted;
-
     if (shouldBeHighlighted)
         [self setThemeState:CPThemeStateHighlighted];
     else

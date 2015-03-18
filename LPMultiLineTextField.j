@@ -125,11 +125,6 @@ var CPTextFieldInputOwner = nil,
 {
     [super layoutSubviews];
 
-    var contentView = [self layoutEphemeralSubviewNamed:@"content-view"
-                                             positioned:CPWindowAbove
-                        relativeToEphemeralSubviewNamed:@"bezel-view"];
-    [contentView setHidden:YES];
-
     var DOMElement = [self _DOMTextareaElement],
         contentInset = [self currentValueForThemeAttribute:@"content-inset"],
         bounds = [self bounds];
@@ -142,7 +137,7 @@ var CPTextFieldInputOwner = nil,
     DOMElement.style.width = MAX(0.0, (CGRectGetWidth(bounds) - contentInset.left - contentInset.right)) + @"px";
     DOMElement.style.height = MAX(0.0, (CGRectGetHeight(bounds) - contentInset.top - contentInset.bottom)) + @"px";
 
-    DOMElement.style.color = [[self currentValueForThemeAttribute:@"text-color"] cssString];
+    DOMElement.style.color = [[self valueForThemeAttribute:@"text-color" inState:CPThemeStateEditing] cssString];
     DOMElement.style.font = [[self currentValueForThemeAttribute:@"font"] cssString];
 
     switch ([self currentValueForThemeAttribute:@"alignment"])
@@ -162,24 +157,6 @@ var CPTextFieldInputOwner = nil,
         default:
             DOMElement.style.textAlign = "left";
     }
-
-    //  We explicitly want a placeholder when the value is an empty string.
-    if ([self hasThemeState:CPTextFieldStatePlaceholder])
-    {
-        DOMElement.value = [self placeholderString];
-    }
-    else if (DOMElement.value != [self stringValue])
-    {
-        // Due to a bug in WebKit we can't change the text area value when the field is focused and
-        // the cursor is placed within the current value. If we do, the text area stops showing its
-        // cursor and stops accepting text (although it still thinks it's focused).
-        DOMElement.blur();
-        DOMElement.value = [self stringValue];
-        DOMElement.focus();
-    }
-
-    if (_hideOverflow)
-        DOMElement.style.overflow = @"hidden";
 }
 
 - (void)scrollWheel:(CPEvent)anEvent
@@ -296,7 +273,7 @@ var CPTextFieldInputOwner = nil,
     return YES;
 }
 
-- (void)_setStringValue:(id)aValue
+- (BOOL)_setStringValue:(CPString)aValue
 {
     [self willChangeValueForKey:@"objectValue"];
     [super setObjectValue:String(aValue)];
@@ -312,15 +289,6 @@ var CPTextFieldInputOwner = nil,
         [self _DOMTextareaElement].value = aValue;
 
     [self _updatePlaceholderState];
-}
-
-- (void)_setCurrentValueIsPlaceholder:(BOOL)isPlaceholder
-{
-    //  Under certain circumstances, _originalPlaceholderString is empty.
-    if (!_originalPlaceholderString)
-        _originalPlaceholderString = [self placeholderString];
-
-    [super _setCurrentValueIsPlaceholder:isPlaceholder];
 }
 
 @end

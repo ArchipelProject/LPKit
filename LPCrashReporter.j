@@ -182,7 +182,7 @@ var sharedErrorLoggerInstance = nil;
 
 @implementation LPCrashReporterOverlayWindow : CPWindow
 
-- (void)initWithContentRect:(CGRect)aContentRect styleMask:(id)aStyleMask
+- (id)initWithContentRect:(CGRect)aContentRect styleMask:(unsigned)aStyleMask
 {
     if (self = [super initWithContentRect:aContentRect styleMask:aStyleMask])
     {
@@ -209,7 +209,7 @@ var sharedErrorLoggerInstance = nil;
     CPString                publishedReportURL;
 }
 
-- (void)initWithContentRect:(CGRect)aContentRect styleMask:(id)aStyleMask stackTrace:(id)aStackTrace
+- (id)initWithContentRect:(CGRect)aContentRect styleMask:(unsigned)aStyleMask stackTrace:(id)aStackTrace
 {
     if (self = [super initWithContentRect:aContentRect styleMask:aStyleMask])
     {

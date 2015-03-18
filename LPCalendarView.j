@@ -39,6 +39,7 @@
 {
     LPCalendarHeaderView headerView @accessors(readonly);
     LPSlideView          slideView;
+    CPView               bezelView;
 
     LPCalendarMonthView  currentMonthView;
     LPCalendarMonthView  firstMonthView;
@@ -56,7 +57,7 @@
     return @"lp-calendar-view";
 }
 
-+ (id)themeAttributes
++ (CPDictionary)themeAttributes
 {
     return [CPDictionary dictionaryWithObjects:[[CPNull null], CGInsetMakeZero(), [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], CGSizeMake(0,0), [CPNull null], [CPNull null], 40, [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], [CPNull null], 30, [CPNull null], [CPNull null], [CPNull null], [CPNull null]]
                                        forKeys:[@"bezel-color", @"bezel-inset", @"grid-color", @"grid-shadow-color",
