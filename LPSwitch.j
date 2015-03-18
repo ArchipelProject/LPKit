@@ -32,6 +32,7 @@
 @import <AppKit/CPView.j>
 @import "LPViewAnimation.j"
 
+@class LPSwitchKnob
 
 @implementation LPSwitch : CPControl
 {

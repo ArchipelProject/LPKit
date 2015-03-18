@@ -31,6 +31,8 @@
 @import <AppKit/CPView.j>
 @import <Foundation/CPDate.j>
 
+@class LPCalendarView
+
 @global CPApp
 
 var immutableDistantFuture = [CPDate distantFuture];

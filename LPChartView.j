@@ -30,6 +30,9 @@
 @import <AppKit/CPView.j>
 @import <AppKit/CPTextField.j>
 
+@class LPChartGridView
+@class LPChartLabelView
+
 // TODO: These should be ivars, or more likely, theme settings.
 
 

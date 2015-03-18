@@ -32,7 +32,8 @@ var CPTextFieldInputOwner = nil,
     CPTextFieldInputResigning = NO,
     CPTextFieldInputDidBlur = NO,
     CPTextFieldInputIsActive = NO,
-    CPTextFieldBlurFunction;
+    CPTextFieldBlurFunction,
+    CPTextFieldInputFunction;
 
 @implementation LPMultiLineTextField : CPTextField
 {
