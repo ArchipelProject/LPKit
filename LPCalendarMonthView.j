@@ -27,9 +27,11 @@
  * THE SOFTWARE.
  *
  */
+
+@import <Foundation/Foundation.j>
 @import <AppKit/CPControl.j>
 @import <AppKit/CPView.j>
-@import <Foundation/CPDate.j>
+@import <AppKit/CPTextField.j>
 
 @class LPCalendarView
 
@@ -98,7 +100,7 @@ var _startAndEndOfWeekCache = {};
 
 + (CPDictionary)themeAttributes
 {
-    return [CPDictionary dictionaryWithObjects:[nil]
+    return [CPDictionary dictionaryWithObjects:[[CPNull null]]
                                        forKeys:[@"grid-color"]];
 }
 
@@ -535,7 +537,7 @@ var _startAndEndOfWeekCache = {};
 
 + (CPDictionary)themeAttributes
 {
-    return [CPDictionary dictionaryWithObjects:[nil, nil]
+    return [CPDictionary dictionaryWithObjects:[[CPNull null], [CPNull null]]
                                        forKeys:[@"background-color", @"bezel-color"]];
 }
 
